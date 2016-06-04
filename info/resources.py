@@ -1,5 +1,3 @@
-__author__ = 'Tobias'
-
 import re
 
 from constants import FIND_RESOURCE_ACT_CAP_PROD, FIND_ENERGY
@@ -22,7 +20,7 @@ class Resource(object):
             numbers.append(re.findall('[0-9\.]+', number))
         return numbers[0]
 
-    def refresh_info(self, refresh_page = True):
+    def refresh_info(self, refresh_page=True):
         if refresh_page:
             self._info_page.refresh_content()
         numbers = self.extract_resource_info()
@@ -43,7 +41,7 @@ class Energy(Resource):
                 numbers.append(int(n[1:]))
         return numbers[0]
 
-    def refresh_info(self, refresh_page = True):
+    def refresh_info(self, refresh_page=True):
         if refresh_page:
             self._info_page.refresh_content()
         number = self.extract_resource_info()

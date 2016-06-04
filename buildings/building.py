@@ -4,9 +4,10 @@ from constants import FIND_COST, FIND_LEVEL, FIND_ENERGYCOST, FIND_DURATION, FIN
 
 
 class Building(object):
-    def __init__(self, name, info_page, supply, energy_producer=False):
+    def __init__(self, category, name, info_page, supply, energy_producer=False):
         self.__info_page = info_page
         self.supply = supply
+        self.category = category  # not used yet...
         self.name = name
         self.metal_cost = 0
         self.crystal_cost = 0
@@ -59,13 +60,13 @@ class Building(object):
                 if a.endswith('s'):
                     build_time += int(a[:-1])
                 elif a.endswith('m'):
-                    build_time += int(a[:-1])*60
+                    build_time += int(a[:-1]) * 60
                 elif a.endswith('h'):
-                    build_time += int(a[:-1])*3600
+                    build_time += int(a[:-1]) * 3600
         return build_time
 
     def get_current_upgrade_link(self, resource_page_content):
-        pattern = self.supply + '.{0,600}' + FIND_BUILDING_LINK
+        pattern = self.supply + '.{0,1200}' + FIND_BUILDING_LINK
         link = re.findall(pattern, resource_page_content)
         try:
             final_link = re.findall('http://.{1,150}', link[0])[0][:-11]
@@ -76,7 +77,6 @@ class Building(object):
     def refresh_info(self, refresh_page=True):
         if refresh_page:
             self.__info_page.refresh_content()
-        content = self.__info_page.content
         cost = self.extract_cost_info()
         self.metal_cost = return_int_if_exists(cost, 0)
         self.crystal_cost = return_int_if_exists(cost, 1)
