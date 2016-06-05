@@ -2,9 +2,6 @@ from configparser import ConfigParser
 
 config = ConfigParser()
 
-def get_universe_speed():
-    pass
-
 # parse existing file
 config.read('config.ini')
 
