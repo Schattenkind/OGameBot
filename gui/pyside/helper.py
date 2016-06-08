@@ -1,5 +1,6 @@
 from PySide import QtCore, QtGui, QtUiTools
 
+
 def load_ui_widget(uifilename, parent=None):
     loader = QtUiTools.QUiLoader()
     uifile = QtCore.QFile(uifilename)
@@ -7,6 +8,7 @@ def load_ui_widget(uifilename, parent=None):
     ui = loader.load(uifile, parent)
     uifile.close()
     return ui
+
 
 def load_image(label, image):
     my_pixmap = QtGui.QPixmap(image)
