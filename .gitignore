@@ -48,6 +48,4 @@ Temporary Items
 
 # Python
 *.pyc
-.idea/workspace.xml
-.idea/OGameBot.iml
-.idea/workspace.xml
+.idea
