@@ -49,3 +49,4 @@ Temporary Items
 # Python
 *.pyc
 .idea
+gui/pyside/resources/downloaded

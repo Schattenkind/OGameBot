@@ -9,8 +9,10 @@ from build_queue.queue import Queue
 
 
 def find_planet_image_for_page(page_content):
+    print(page_content)
     image_url = re.findall(FIND_PLANET_IMAGE, page_content)
-    return re.findall("http://.{0,300}\)", image_url[0])[0][:-1]
+    print(image_url)
+    return re.findall("https://.{0,300}\)", image_url[0])[0][:-1]
 
 class Planet(object):
     """ Simulates a planet in ogame. Contains pages for the planet buildings and resources.
