@@ -23,17 +23,17 @@ FLEET_PAGE = MAIN_PAGE + '?page=fleet1'
 GALAXY_PAGE = MAIN_PAGE + '?page=galaxy'
 
 #  building pages
-METAL_MINE = MAIN_PAGE + '?page=resources&ajax=1&type=1'
-CRYSTAL_MINE = MAIN_PAGE + '?page=resources&ajax=1&type=2'
-DEUTERIUM_MINE = MAIN_PAGE + '?page=resources&ajax=1&type=3'
-SOLAR = MAIN_PAGE + '?page=resources&ajax=1&type=4'
-FUSION = MAIN_PAGE + '?page=resources&ajax=1&type=12'
-METAL_STORAGE = MAIN_PAGE + '?page=resources&ajax=1&type=22'
-CRYSTAL_STORAGE = MAIN_PAGE + '?page=resources&ajax=1&type=23'
-DEUTERIUM_STORAGE = MAIN_PAGE + '?page=resources&ajax=1&type=24'
-HIDDEN_METAL_STORAGE = MAIN_PAGE + '?page=resources&ajax=1&type=25'
-HIDDEN_CRYSTAL_STORAGE = MAIN_PAGE + '?page=resources&ajax=1&type=26'
-HIDDEN_DEUTERIUM_STORAGE = MAIN_PAGE + '?page=resources&ajax=1&type=27'
+METAL_MINE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=1'
+CRYSTAL_MINE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=2'
+DEUTERIUM_MINE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=3'
+SOLAR_URL = MAIN_PAGE + '?page=resources&ajax=1&type=4'
+FUSION_URL = MAIN_PAGE + '?page=resources&ajax=1&type=12'
+METAL_STORAGE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=22'
+CRYSTAL_STORAGE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=23'
+DEUTERIUM_STORAGE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=24'
+HIDDEN_METAL_STORAGE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=25'
+HIDDEN_CRYSTAL_STORAGE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=26'
+HIDDEN_DEUTERIUM_STORAGE_URL = MAIN_PAGE + '?page=resources&ajax=1&type=27'
 
 ROBOTICS = MAIN_PAGE + 'page=station&ajax=1&type=14'
 SHIPYARD = MAIN_PAGE + 'page=station&ajax=1&type=21'
@@ -57,9 +57,10 @@ FIND_PLANET_IMAGE = '<div id="planet" style="background.image.url.{0,300}\)">'
 
 # universe
 FIND_UNIVERSE_SPEED = '"ogame-universe-speed" content="."'
+FIND_UNIVERSE_SPEED_FLEET = '"ogame-universe-speed-fleet" content="."'
 
 # header dict
-HEADERS_DICT = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:38.0) Gecko/20100101 Firefox/38.0'}
+HEADERS_DICT = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36'}
 
 # helper methodes
 def return_int_if_exists(value, index):

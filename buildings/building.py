@@ -2,12 +2,25 @@ import re
 
 from constants import FIND_COST, FIND_LEVEL, FIND_ENERGYCOST, FIND_DURATION, FIND_BUILDING_LINK, return_int_if_exists
 
+# building name constants
+METAL_MINE = 0
+CRYSTAL_MINE = 1
+DEUTERIUM_MINE = 2
+SOLAR = 3
+FUSION = 4
+METAL_STORAGE = 5
+CRYSTAL_STORAGE = 6
+DEUTERIUM_STORAGE = 7
+HIDDEN_METAL_STORAGE = 8
+HIDDEN_CRYSTAL_STORAGE = 9
+HIDDEN_DEUTERIUM_STORAGE = 10
+
 
 class Building(object):
-    def __init__(self, category, name, info_page, supply, energy_producer=False):
+    def __init__(self, name, info_page, supply, energy_producer=False):
         self.__info_page = info_page
         self.supply = supply
-        self.category = category  # not used yet...
+        # self.category = category  # not used yet...
         self.name = name
         self.metal_cost = 0
         self.crystal_cost = 0

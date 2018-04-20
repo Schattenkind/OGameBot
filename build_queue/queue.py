@@ -1,8 +1,6 @@
 import re
 import time
 import threading
-
-from build_queue.queued_building import *
 from constants import *
 
 
@@ -16,7 +14,8 @@ class Queue(threading.Thread):
         self.is_building = False
 
     def add_to_queue(self, building):
-        level = building.level + 1 + self.currently_queued_buildings_with_name(building.name)
+        return None
+        '''level = building.level + 1 + self.currently_queued_buildings_with_name(building.name)
         if building.supply == 'supply1':
             queue_item = QMetalMine(building, level)
             self.buildings_queue.append(queue_item)
@@ -44,7 +43,7 @@ class Queue(threading.Thread):
         else:
             queue_item = QueuedBuilding(building, level)
             self.buildings_queue.append(queue_item)
-        return queue_item
+        return queue_item'''
 
     def upgrade_building(self, building_queue_item):
         """

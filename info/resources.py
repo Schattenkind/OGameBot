@@ -18,6 +18,8 @@ class Resource(object):
         numbers = []
         for number in extract_resource_numbers:
             numbers.append(re.findall('[0-9\.]+', number))
+        if not numbers:
+            return 0, 0, 0
         return numbers[0]
 
     def refresh_info(self, refresh_page=True):

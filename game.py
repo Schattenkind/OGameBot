@@ -1,25 +1,61 @@
 import re
 
 import requests
+import logging
 
+import os.path
 from constants import *
-from planet import Planet
+
+
+logger = logging.getLogger('ogame_bot')
+
+
+def initialize_logger():
+    # create logger
+    logger.setLevel(logging.DEBUG)
+
+    # create file handler which logs even debug messages
+    number_of_sessions = 0
+    file_name = "session_0.log"
+    while os.path.isfile(file_name):
+        file_name = "session_" + str(number_of_sessions) + ".log"
+        number_of_sessions += 1
+    fh = logging.FileHandler(file_name)
+    fh.setLevel(logging.DEBUG)
+
+    # create console handler with a higher log level
+    ch = logging.StreamHandler()
+    ch.setLevel(logging.INFO)
+
+    # create formatter and add it to the handlers
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    ch.setFormatter(formatter)
+
+    # add the handlers to the logger
+    logger.addHandler(fh)
+    logger.addHandler(ch)
 
 
 class Game(object):
     UNIVERSE_SPEED = 1
+    UNIVERSE_SPEED_FLEET = 1
 
     def __init__(self, server, user, password):
+        self.logger = logger
+
         self.server = server
         self.user = user
         self.password = password
         self.session = requests.Session()
         self.planets = {}
-        self.current_planet = ''
         self.login()
         self.get_planets()
         self.current_planet = self.planets['main']
-        Game.UNIVERSE_SPEED = self.get_universe_speed()
+        Game.UNIVERSE_SPEED = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED)
+        self.logger.info("Universe speed has been set to: " + str(Game.UNIVERSE_SPEED))
+        Game.UNIVERSE_SPEED_FLEET = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED_FLEET)
+        self.logger.info("Universe fleet speed has been set to: " + str(Game.UNIVERSE_SPEED_FLEET))
 
     def login(self):
         url = LOGIN_PAGE
@@ -27,23 +63,42 @@ class Game(object):
         password = self.password
         uni = self.server
 
+        self.logger.info("Trying to login as user " + self.user)
         self.session.get(url)
+        self.logger.debug("Get with URL: " + url)
         login_data = {'kid': '',
                       'uni': uni,
                       'login': user,
                       'pass': password}
 
         self.session.post(url, data=login_data, headers=HEADERS_DICT)
+        self.logger.debug("Post with URL: " + url + "; data: " + str(login_data) + "; headers: "+ str(HEADERS_DICT))
 
     def get_planets(self):
+        from planet import Planet
         self.planets = {'main': Planet(self.session)}
 
     def exit_game(self):
+        self.logger.info("Exiting the game and closing the session.")
         self.session.close()
 
-    def get_universe_speed(self):
-        extract_resource_numbers = re.findall(FIND_UNIVERSE_SPEED, self.current_planet.page['resource'].content)
+    def get_basic_parameter_value(self, value):
+        extract_resource_numbers = re.findall(value, self.current_planet.page['resource'].content)
         numbers = []
         for number in extract_resource_numbers:
-            numbers.append(re.findall('[0-9\.]+', number))
-        return int(numbers[0][0])
+            numbers.append(re.findall('[0-9.]+', number))
+        try:
+            number = int(numbers[0][0])
+            self.logger.debug("Found number " + str(number) + " with regex: " + value)
+        except IndexError:
+            self.logger.warning("Couldn't find any number with regex: " + value)
+            number = 0
+        return number
+
+
+if __name__ == "__main__":
+    initialize_logger()
+    try:
+        Game(SERVER, USER, PASSWORD)
+    except Exception as e:
+        logger.exception("Uncaught Exception was raised! Exiting")
