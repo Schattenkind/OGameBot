@@ -1,16 +1,25 @@
 import re
+import logging
 
 from constants import FIND_RESOURCE_ACT_CAP_PROD, FIND_ENERGY
 
 
+logger = logging.getLogger('ogame_bot.info.resources')
+
+
 class Resource(object):
     def __init__(self, name, info_page):
+        self.logger = logger
         self.name = name
         self.actual = 0
         self.production = 0
         self.capacity = 0
         self._info_page = info_page
         self.refresh_info()
+
+    def __str__(self):
+        return "Resource {name}(actual: {actual}; production: {production}; capacity: {capacity})".format(
+            name=self.name, actual=self.actual, production=self.production, capacity=self.capacity)
 
     def extract_resource_info(self):
         extract_resource_numbers = re.findall(FIND_RESOURCE_ACT_CAP_PROD.format(name=self.name.lower()),

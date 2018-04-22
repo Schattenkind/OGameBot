@@ -1,4 +1,5 @@
 import re
+import logging
 
 from constants import FIND_COST, FIND_LEVEL, FIND_ENERGYCOST, FIND_DURATION, FIND_BUILDING_LINK, return_int_if_exists
 
@@ -15,10 +16,13 @@ HIDDEN_METAL_STORAGE = 8
 HIDDEN_CRYSTAL_STORAGE = 9
 HIDDEN_DEUTERIUM_STORAGE = 10
 
+logger = logging.getLogger('ogame_bot.buildings.building')
+
 
 class Building(object):
     def __init__(self, name, info_page, supply, energy_producer=False):
         self.__info_page = info_page
+        self.logger = logger
         self.supply = supply
         # self.category = category  # not used yet...
         self.name = name
@@ -31,6 +35,11 @@ class Building(object):
         self.upgrade_link = ''
         self.energy_producer = energy_producer
         self.refresh_info()
+
+    def __str__(self):
+        return "Building {name}(metal_cost: {metal_cost}; crystal_cost: {crystal_cost}; deuterium_cost: {deuterium_cost}; level: {level}; building_time: {building_time})".format(
+            name=self.name, metal_cost=self.metal_cost, crystal_cost=self.crystal_cost,
+            deuterium_cost=self.deuterium_cost, level=self.level, building_time=self.building_time)
 
     @property
     def energy(self):
@@ -79,10 +88,11 @@ class Building(object):
         return build_time
 
     def get_current_upgrade_link(self, resource_page_content):
-        pattern = self.supply + '.{0,1200}' + FIND_BUILDING_LINK
+        pattern = self.supply + '.{0,1300}' + FIND_BUILDING_LINK
+        self.logger.debug("Trying to find upgrade link with pattern " + pattern)
         link = re.findall(pattern, resource_page_content)
         try:
-            final_link = re.findall('http://.{1,150}', link[0])[0][:-11]
+            final_link = re.findall('https://.{1,150}', link[0])[0][:-11]
         except IndexError:
             final_link = None
         return final_link
@@ -91,6 +101,7 @@ class Building(object):
         if refresh_page:
             self.__info_page.refresh_content()
         cost = self.extract_cost_info()
+        self.logger.debug("Found the following building costs for building " + self.name + ": " + str(cost))
         self.metal_cost = return_int_if_exists(cost, 0)
         self.crystal_cost = return_int_if_exists(cost, 1)
         self.deuterium_cost = return_int_if_exists(cost, 2)

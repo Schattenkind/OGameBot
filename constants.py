@@ -49,7 +49,7 @@ FIND_COST = '"[\w]+ tooltip" title="[0-9\.]+'
 FIND_LEVEL = '<span class="level">.{1,20}[0-9]+.{1,20}<span class="'
 FIND_ENERGYCOST = '<span class="time">.{0,30}[0-9\.]+'
 FIND_DURATION = '<span class="time" id="buildDuration">.{1,20}[0-9\.]*.{1,5}[0-9\.]*.{1,5}[0-9\.]*'
-FIND_BUILDING_LINK = 'sendBuildRequest(.{0,300}, null, 1)'
+FIND_BUILDING_LINK = 'sendBuildRequest.{0,300}, null, 1'
 FIND_ACTUAL_BUILDING_TIME = "new bauCountdown.getElementByIdWithCache..'b_supply.{1,3}.'.,[0-9]*,[0-9]*"
 
 # planets

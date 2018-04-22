@@ -1,9 +1,10 @@
 import re
-
 import requests
 import logging
+import os
+import time
 
-import os.path
+from info.page_info import Page
 from constants import *
 
 
@@ -48,14 +49,25 @@ class Game(object):
         self.user = user
         self.password = password
         self.session = requests.Session()
+
+        Game.UNIVERSE_SPEED = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED)
+        if Game.UNIVERSE_SPEED == 0:
+            self.logger.warning("Could not set universe speed! Setting it to 1")
+            Game.UNIVERSE_SPEED = 1
+        else:
+            self.logger.info("Universe speed has been set to: " + str(Game.UNIVERSE_SPEED))
+
+        Game.UNIVERSE_SPEED_FLEET = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED_FLEET)
+        if Game.UNIVERSE_SPEED_FLEET == 0:
+            self.logger.warning("Could not set universe fleet speed! Setting it to 1")
+            Game.UNIVERSE_SPEED_FLEET = 1
+        else:
+            self.logger.info("Universe fleet speed has been set to: " + str(Game.UNIVERSE_SPEED_FLEET))
+
         self.planets = {}
         self.login()
         self.get_planets()
         self.current_planet = self.planets['main']
-        Game.UNIVERSE_SPEED = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED)
-        self.logger.info("Universe speed has been set to: " + str(Game.UNIVERSE_SPEED))
-        Game.UNIVERSE_SPEED_FLEET = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED_FLEET)
-        self.logger.info("Universe fleet speed has been set to: " + str(Game.UNIVERSE_SPEED_FLEET))
 
     def login(self):
         url = LOGIN_PAGE
@@ -83,7 +95,7 @@ class Game(object):
         self.session.close()
 
     def get_basic_parameter_value(self, value):
-        extract_resource_numbers = re.findall(value, self.current_planet.page['resource'].content)
+        extract_resource_numbers = re.findall(value, Page(self.session, RESOURCE_PAGE).content)
         numbers = []
         for number in extract_resource_numbers:
             numbers.append(re.findall('[0-9.]+', number))
@@ -100,5 +112,7 @@ if __name__ == "__main__":
     initialize_logger()
     try:
         Game(SERVER, USER, PASSWORD)
+        while True:
+            time.sleep(1)
     except Exception as e:
         logger.exception("Uncaught Exception was raised! Exiting")
