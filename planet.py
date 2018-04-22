@@ -1,7 +1,7 @@
 import logging
 from constants import *
 from info.page_info import Page
-from info.resources import Resource, Energy
+from info.resources import *
 from buildings.building import *
 from buildings.queue import BuildQueue
 
@@ -22,14 +22,14 @@ class Planet(object):
         self.buildings_queue = BuildQueue(self)
 
         # load pages
-        self.page = {'resource': Page(self.session, RESOURCE_PAGE),
+        self.pages = {'resource': Page(self.session, RESOURCE_PAGE),
                      'overview': Page(self.session, OVERVIEW_PAGE),
                      'station': Page(self.session, STATION_PAGE)}
 
-        self.resources = {'metal': Resource('Metal', self.page['resource']),
-                          'crystal': Resource('Crystal', self.page['resource']),
-                          'deuterium': Resource('Deuterium', self.page['resource']),
-                          'energy': Energy('Energy', self.page['resource'])}
+        self.resources = {METAL: Resource('Metal', self.pages['resource']),
+                          CRYSTAL: Resource('Crystal', self.pages['resource']),
+                          DEUTERIUM: Resource('Deuterium', self.pages['resource']),
+                          ENERGY: Energy('Energy', self.pages['resource'])}
 
         self.buildings = {METAL_MINE: Building('Metal Mine', Page(self.session, METAL_MINE_URL), 'supply1'),
                           CRYSTAL_MINE: Building('Crystal Mine', Page(self.session, CRYSTAL_MINE_URL),
@@ -56,12 +56,12 @@ class Planet(object):
 
     def refresh_info(self):
         self.logger.debug("Start refresh of planet info. (Planet ID " + self.id + ")")
-        for page in self.page.keys():
-            self.page[page].refresh_content()
-        for resource in self.resources.keys():
+        for page in self.pages:
+            self.pages[page].refresh_content()
+        for resource in self.resources:
             # not necessary to refresh the page since it was just refreshed
             self.resources[resource].refresh_info(refresh_page=False)
-        for building in self.buildings.keys():
+        for building in self.buildings:
             self.buildings[building].refresh_info()
 
     def fill_queue(self):
@@ -71,7 +71,7 @@ class Planet(object):
         deuterium_mine_level = self.buildings[DEUTERIUM_MINE].level
         solar_level = self.buildings[SOLAR].level
 
-        current_energy = self.resources['energy'].actual
+        current_energy = self.resources[ENERGY].actual
 
         message = "Figuring out what to do next... Current planet (ID: " + self.id + ") state:\n"
         for b in self.buildings:

@@ -1,4 +1,5 @@
 from constants import *
+from info.resources import METAL, CRYSTAL, DEUTERIUM, ENERGY
 
 import re
 import time
@@ -31,21 +32,22 @@ class BuildQueue(threading.Thread):
                  2 - other reason why it could not be upgraded (e.g. other building still being build)
         """
         self.planet.refresh_info()
-        if self.planet.resources['metal'].actual < building.metal_cost:
+        if self.planet.resources[METAL].actual < building.metal_cost:
             self.logger.info("Not enough metal to upgrade! Waiting.. (Planet ID " + self.planet.id + ")")
             return 1
-        if self.planet.resources['crystal'].actual < building.crystal_cost:
+        if self.planet.resources[CRYSTAL].actual < building.crystal_cost:
             self.logger.info("Not enough crystal to upgrade! Waiting.. (Planet ID " + self.planet.id + ")")
             return 1
-        if self.planet.resources['deuterium'].actual < building.deuterium_cost:
+        if self.planet.resources[DEUTERIUM].actual < building.deuterium_cost:
             self.logger.info("Not enough deuterium to upgrade! Waiting.. (Planet ID " + self.planet.id + ")")
             return 1
-        link = building.get_current_upgrade_link(self.planet.page['resource'].content)
+        link = building.get_current_upgrade_link(self.planet.pages['resource'].content)
         if link:
-            self.planet.resources['metal'].actual -= building.metal_cost
-            self.planet.resources['crystal'].actual -= building.crystal_cost
-            self.planet.resources['deuterium'].actual -= building.deuterium_cost
-            self.logger.info("Starting upgrade of " + building.name + " with link " + link + " (Planet ID " + self.planet.id + ")")
+            self.planet.resources[METAL].actual -= building.metal_cost
+            self.planet.resources[CRYSTAL].actual -= building.crystal_cost
+            self.planet.resources[DEUTERIUM].actual -= building.deuterium_cost
+            self.logger.info(
+                "Starting upgrade of " + building.name + " with link " + link + " (Planet ID " + self.planet.id + ")")
             self.planet.session.get(link)
             self.logger.info("Required time: " + str(datetime.timedelta(seconds=building.building_time)))
             return 0
@@ -98,8 +100,8 @@ class BuildQueue(threading.Thread):
             self.building()
             self.buildings_queue.pop(0)
 
-        self.planet.page['resource'].refresh_content()
-        extract_resource_numbers = re.findall(FIND_ACTUAL_BUILDING_TIME, self.planet.page['resource'].content)
+        self.planet.pages['resource'].refresh_content()
+        extract_resource_numbers = re.findall(FIND_ACTUAL_BUILDING_TIME, self.planet.pages['resource'].content)
 
         numbers = []
         for number in extract_resource_numbers:

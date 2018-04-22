@@ -3,6 +3,10 @@ import logging
 
 from constants import FIND_COST, FIND_LEVEL, FIND_ENERGYCOST, FIND_DURATION, FIND_BUILDING_LINK, return_int_if_exists
 
+__all__ = ['Building', 'METAL_MINE', 'CRYSTAL_MINE', 'DEUTERIUM_MINE', 'SOLAR', 'FUSION', 'METAL_STORAGE',
+           'CRYSTAL_STORAGE', 'DEUTERIUM_STORAGE', 'HIDDEN_METAL_STORAGE', 'HIDDEN_CRYSTAL_STORAGE',
+           'HIDDEN_DEUTERIUM_STORAGE']
+
 # building name constants
 METAL_MINE = 0
 CRYSTAL_MINE = 1

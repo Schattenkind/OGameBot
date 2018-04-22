@@ -8,10 +8,15 @@ logger = logging.getLogger('ogame_bot.info.page_info')
 
 
 class Page(object):
-    def __init__(self, session, url, data={}):
+    def __init__(self, session, url, data=None):
         self.logger = logger
         self._url = url
-        self._data = data
+
+        if data is None:
+            self._data = {}
+        else:
+            self._data = data
+
         self._session = session
         self._content = ''
         self.last_refresh_time = 0

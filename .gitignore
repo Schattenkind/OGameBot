@@ -49,5 +49,5 @@ Temporary Items
 # Python
 *.pyc
 .idea
-gui/pyside/resources/downloaded
+page_contents
 *.log

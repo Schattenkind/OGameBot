@@ -4,7 +4,15 @@ import logging
 from constants import FIND_RESOURCE_ACT_CAP_PROD, FIND_ENERGY
 
 
+__all__ = ['Resource', 'Energy', 'METAL', 'CRYSTAL', 'DEUTERIUM', 'ENERGY']
+
 logger = logging.getLogger('ogame_bot.info.resources')
+
+
+METAL = 0
+CRYSTAL = 1
+DEUTERIUM = 2
+ENERGY = 3
 
 
 class Resource(object):
