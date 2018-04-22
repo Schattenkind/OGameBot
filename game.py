@@ -50,6 +50,9 @@ class Game(object):
         self.password = password
         self.session = requests.Session()
 
+        self.planets = {}
+        self.login()
+
         Game.UNIVERSE_SPEED = self.get_basic_parameter_value(FIND_UNIVERSE_SPEED)
         if Game.UNIVERSE_SPEED == 0:
             self.logger.warning("Could not set universe speed! Setting it to 1")
@@ -63,10 +66,8 @@ class Game(object):
             Game.UNIVERSE_SPEED_FLEET = 1
         else:
             self.logger.info("Universe fleet speed has been set to: " + str(Game.UNIVERSE_SPEED_FLEET))
-
-        self.planets = {}
-        self.login()
         self.get_planets()
+
         self.current_planet = self.planets['main']
 
     def login(self):

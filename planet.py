@@ -85,15 +85,14 @@ class Planet(object):
         if current_energy < 0 and solar_level < 15:
             self.upgrade_building(self.buildings[SOLAR])
 
-        elif metal_mine_level - 3 < crystal_mine_level:
-            self.upgrade_building(self.buildings[METAL_MINE])
+        elif metal_mine_level - 3 > crystal_mine_level:
+            self.upgrade_building(self.buildings[CRYSTAL_MINE])
 
-        elif crystal_mine_level - 4 < deuterium_mine_level and crystal_mine_level > 10:
+        elif crystal_mine_level - 4 > deuterium_mine_level and crystal_mine_level > 10:
             self.upgrade_building(self.buildings[DEUTERIUM_MINE])
 
         else:
-            self.logger.info("Adding metal mine to the building queue. (Planet " + self.id + ")")
-            self.upgrade_building(self.buildings[CRYSTAL_MINE])
+            self.upgrade_building(self.buildings[METAL_MINE])
 
 
     def upgrade_building(self, building):
