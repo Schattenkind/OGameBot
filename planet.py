@@ -88,7 +88,7 @@ class Planet(object):
         elif metal_mine_level - 3 < crystal_mine_level:
             self.upgrade_building(self.buildings[METAL_MINE])
 
-        elif crystal_mine_level - 3 > deuterium_mine_level and crystal_mine_level > 10:
+        elif crystal_mine_level - 4 < deuterium_mine_level and crystal_mine_level > 10:
             self.upgrade_building(self.buildings[DEUTERIUM_MINE])
 
         else:
